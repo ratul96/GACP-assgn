@@ -1,0 +1,15 @@
+#version 430 core
+//Vertex inputs
+layout(location=0) in vec3 vPosition;
+
+out vec3 localPosition;
+
+uniform mat4 projMat;
+uniform mat4 viewMat;
+//uniform mat4 modelMat;
+void main()
+{
+	localPosition=vPosition;
+	gl_Position=projMat*viewMat*vec4(localPosition,1.0);
+
+}

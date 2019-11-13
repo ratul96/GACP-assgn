@@ -1,0 +1,19 @@
+#version 430 core
+
+layout(location=0) in vec3 vPosition;
+
+out vec3 localPos;
+
+uniform mat4 projMat;
+uniform mat4 viewMat;
+//uniform mat4 modelMat;
+
+void main()
+{
+    localPos = vPosition;
+
+    mat4 rotationView = mat4(mat3(viewMat)); 
+    vec4 clipPos = projMat * rotationView * vec4(localPos, 1.0);
+
+    gl_Position = clipPos.xyww;
+}
