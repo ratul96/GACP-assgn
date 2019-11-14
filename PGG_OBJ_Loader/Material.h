@@ -79,6 +79,7 @@ protected:
 	
 	unsigned int envCubemap;
 	
+	unsigned int irrMap;
 };
 
 

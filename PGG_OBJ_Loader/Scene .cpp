@@ -66,6 +66,20 @@ Scene::Scene()
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glGenTextures(1, &irrMap);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
+	for (unsigned int i = 0; i < 6; i++)
+	{
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 32, 32, 0, GL_RGB, GL_FLOAT, nullptr);
+	}
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	
 	
 	// Position of the light, in world-space
 	//_lightPosition = glm::vec3(1.2f, 2.0f, 1.2f);
@@ -96,6 +110,8 @@ Scene::Scene()
 	modelMaterial3->LoadShaders("VertShader.txt", "FragShader.txt");
 	cubeMaterial->LoadShaders("HDRVertexshader.txt", "HDRFragshader.txt");
 
+	
+
 	glUniform1f(glGetUniformLocation(cubeMaterial->_shaderProgram, "equirectangularMap"), 0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, hdrTexture);
@@ -106,7 +122,7 @@ Scene::Scene()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, envMap);
 
-	cubeMaterial3->LoadShaders("HDRVertexshader.txt", "IRFragShader.txt");
+	//cubeMaterial3->LoadShaders("HDRVertexshader.txt", "IRFragShader.txt");
 
 	glUniform1f(glGetUniformLocation(cubeMaterial3->_shaderProgram, "envMap"), 0);
 	glActiveTexture(GL_TEXTURE0);
@@ -123,6 +139,7 @@ Scene::Scene()
 	_model3->SetMaterial(modelMaterial3);
 	cube->SetMaterial(cubeMaterial);
 	cube2->SetMaterial(cubeMaterial2);
+	cube3->SetMaterial(cubeMaterial3);
 
 	// The mesh is the geometry for the object
 	Mesh *modelMesh = new Mesh();
@@ -130,18 +147,22 @@ Scene::Scene()
 	Mesh *modelMesh3 = new Mesh();
 	Mesh *cubeMesh = new Mesh();
 	Mesh *cubeMesh2 = new Mesh();
+	Mesh *cubeMesh3 = new Mesh();
 	// Load from OBJ file. This must have triangulated geometry
 	modelMesh->LoadOBJ("teapot3.obj");
 	modelMesh2->LoadOBJ("teapot3.obj");
 	modelMesh3->LoadOBJ("teapot3.obj");
 	cubeMesh->LoadCube();
 	cubeMesh2->LoadCube();
+	cubeMesh3->LoadCube();
+
 	// Tell the game object to use this mesh
 	_model->SetMesh(modelMesh);
 	_model2->SetMesh(modelMesh2);
 	_model3->SetMesh(modelMesh3);
 	cube->SetMesh(cubeMesh);
 	cube2->SetMesh(cubeMesh2);
+	cube3->SetMesh(cubeMesh3);
 
 	_model2->SetPosition(1.0f, -2.0f, -2.0f);
 	_model3->SetPosition(-1.0f, -1.0f, -1.5f);
@@ -157,21 +178,11 @@ Scene::Scene()
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	glGenTextures(1, &irrMap);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
-	for (unsigned int i = 0; i < 6; i++)
-	{
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 32, 32, 0, GL_RGB, GL_FLOAT, nullptr);
-	}
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
+	
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 32, 32);
+	
 
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 	for (unsigned int i = 0; i < 6; i++)
@@ -182,6 +193,7 @@ Scene::Scene()
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	
 
 }
 
@@ -193,11 +205,12 @@ Scene::~Scene()
 void Scene::Update(float deltaTs)
 {
 	// Update the game object (this is currently hard-coded to rotate)
-	//_model->Update(deltaTs);
-	//_model2->Update(deltaTs);
-	//_model3->Update(deltaTs);
+	_model->Update(deltaTs);
+	_model2->Update(deltaTs);
+	_model3->Update(deltaTs);
 	// This updates the camera's position and orientation
 	_viewMatrix = glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -3.5f)), _cameraAngleX, glm::vec3(1, 0, 0)), _cameraAngleY, glm::vec3(0, 1, 0));
+	
 }
 
 void Scene::Draw()
@@ -206,10 +219,8 @@ void Scene::Draw()
 	_model->Draw(_viewMatrix, _projMatrix);
 	_model2->Draw(_viewMatrix, _projMatrix);
 	_model3->Draw(_viewMatrix, _projMatrix);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
-
-
+	
+	
 
 	cube2->Draw(_viewMatrix, _projMatrix);
 

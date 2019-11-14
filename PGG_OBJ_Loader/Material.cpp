@@ -316,7 +316,7 @@ void Material::Apply()
 	glUseProgram( _shaderProgram );
 
 	//glUniform4fv( _shaderWSLightPosLocation, 1, glm::value_ptr(_lightPosition) );
-	glUniform1f(glGetUniformLocation(_shaderProgram, "irrMap"), 0);
+	glUniform1f(glGetUniformLocation(_shaderProgram, "irrMap"), 0.0f);
 	glUniform3f(glGetUniformLocation(_shaderProgram, "red"), 0.5f, 0.0f, 0.0f);
 	glUniform1f(glGetUniformLocation(_shaderProgram, "ao"), 1.0f);
 	glUniform3f(glGetUniformLocation(_shaderProgram, "lightPositions[0]"), 1.0f, -2.0f, -2.0f);
@@ -330,11 +330,12 @@ void Material::Apply()
 	glUniform3f(glGetUniformLocation(_shaderProgram, "lightColors[3]"), 300.0f, 300.0f, 300.0f);
 
 	glUniform3f(glGetUniformLocation(_shaderProgram, "viewPos"), 0.0f, 0.0f, 0.0f);
-	glUniform1f(glGetUniformLocation(_shaderProgram, "metallic"), 0.5f);
-	glUniform1f(glGetUniformLocation(_shaderProgram, "roughness"), 0.46f);
+	glUniform1f(glGetUniformLocation(_shaderProgram, "metallic"), 0.2f);
+	glUniform1f(glGetUniformLocation(_shaderProgram, "roughness"), 0.06f);
 
 	
-		
+	
+
 		/*unsigned int RBO;
 		
 		glBindRenderbuffer(GL_RENDERBUFFER, RBO); // Setting up the buffers
@@ -342,7 +343,8 @@ void Material::Apply()
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, RBO)*/;
 
 	
-
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
 		
 	
 

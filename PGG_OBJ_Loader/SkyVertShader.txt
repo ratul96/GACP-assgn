@@ -10,7 +10,7 @@ uniform mat4 viewMat;
 
 void main()
 {
-    localPos = vPosition;
+    localPosition = vPosition;
 
     mat4 rotationView = mat4(mat3(viewMat)); 
     vec4 clipPos = projMat * rotationView * vec4(localPosition, 1.0);

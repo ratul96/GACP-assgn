@@ -10,7 +10,7 @@ const float Pi= 3.14159265359;
 
 void main()
 {
-	vec3 Normal=normalize(localPos);
+	vec3 Normal=normalize(localPosition);
 
 	vec3 irr=vec3(0.0);
 
