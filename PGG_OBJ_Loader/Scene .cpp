@@ -80,6 +80,7 @@ Scene::Scene()
 	_model3 = new GameObject();
 	cube = new GameObject();
 	cube2 = new GameObject();
+	cube3 = new GameObject();
 
 	// Create the material for the game object
 	Material *modelMaterial = new Material();
@@ -87,6 +88,7 @@ Scene::Scene()
 	Material *modelMaterial3 = new Material();
 	Material *cubeMaterial = new Material();
 	Material *cubeMaterial2 = new Material();
+	Material *cubeMaterial3 = new Material();
 
 	// Shaders are now in files
 	modelMaterial->LoadShaders("VertShader.txt","FragShader.txt");
@@ -101,6 +103,12 @@ Scene::Scene()
 	cubeMaterial2->LoadShaders("SkyVertShader.txt", "SkyFragShader.txt");
 
 	glUniform1f(glGetUniformLocation(cubeMaterial2->_shaderProgram, "envMap"), 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, envMap);
+
+	cubeMaterial3->LoadShaders("HDRVertexshader.txt", "IRFragShader.txt");
+
+	glUniform1f(glGetUniformLocation(cubeMaterial3->_shaderProgram, "envMap"), 0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, envMap);
 	
@@ -149,6 +157,32 @@ Scene::Scene()
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	glGenTextures(1, &irrMap);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
+	for (unsigned int i = 0; i < 6; i++)
+	{
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 32, 32, 0, GL_RGB, GL_FLOAT, nullptr);
+	}
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 32, 32);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+	for (unsigned int i = 0; i < 6; i++)
+	{
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, irrMap, 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		cube3->Draw(_cubeviewMatrix[i], _cubeprojMatrix);
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
 }
 
 Scene::~Scene()
@@ -172,6 +206,8 @@ void Scene::Draw()
 	_model->Draw(_viewMatrix, _projMatrix);
 	_model2->Draw(_viewMatrix, _projMatrix);
 	_model3->Draw(_viewMatrix, _projMatrix);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
 
 
 

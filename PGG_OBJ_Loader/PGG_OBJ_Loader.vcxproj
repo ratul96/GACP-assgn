@@ -153,6 +153,7 @@
     <Text Include="FragShader.txt" />
     <Text Include="HDRFragshader.txt" />
     <Text Include="HDRVertexshader.txt" />
+    <Text Include="IRFragShader.txt" />
     <Text Include="SkyFragShader.txt" />
     <Text Include="SkyVertShader.txt" />
     <Text Include="VertShader.txt" />

@@ -33,6 +33,9 @@
     <Text Include="SkyFragShader.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="IRFragShader.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">

@@ -34,6 +34,7 @@ public:
 
 	unsigned int hdrTexture;
 	unsigned int envMap;
+	unsigned int irrMap;
 	unsigned int RBO;
 	unsigned int FBO;
 
@@ -45,6 +46,7 @@ protected:
 	GameObject *_model3;
 	GameObject *cube;
 	GameObject *cube2;
+	GameObject *cube3;
 	// This matrix represents the camera's position and orientation
 	glm::mat4 _viewMatrix;
 	//Camera orientation for equirectangular cubemap

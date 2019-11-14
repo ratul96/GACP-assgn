@@ -2,7 +2,7 @@
 
 layout(location=0) in vec3 vPosition;
 
-out vec3 localPos;
+out vec3 localPosition;
 
 uniform mat4 projMat;
 uniform mat4 viewMat;
@@ -13,7 +13,7 @@ void main()
     localPos = vPosition;
 
     mat4 rotationView = mat4(mat3(viewMat)); 
-    vec4 clipPos = projMat * rotationView * vec4(localPos, 1.0);
+    vec4 clipPos = projMat * rotationView * vec4(localPosition, 1.0);
 
     gl_Position = clipPos.xyww;
 }

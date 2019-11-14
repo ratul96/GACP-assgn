@@ -1,0 +1,40 @@
+#version 430 core
+
+out vec4 Fragcolor;
+
+in vec3 localPosition;
+
+uniform samplerCube envMap;
+
+const float Pi= 3.14159265359;
+
+void main()
+{
+	vec3 Normal=normalize(localPos);
+
+	vec3 irr=vec3(0.0);
+
+	vec3 upDir=vec3(0.0,1.0,0.0);
+	vec3 rightDir=cross(upDir,Normal);
+	upDir=cross(Normal,rightDir);
+
+	float sampleDelta=0.025;
+	float numberSamples=0.0;
+
+	for(float phi=0.0;phi<2.0*Pi;phi+=sampleDelta)
+	{
+		for(float theta=0.0;theta<0.5*Pi;theta+=sampleDelta)
+		{
+			vec3 tangent=vec3(sin(theta)*cos(phi),sin(theta)*sin(phi),cos(theta));
+
+			vec3 sampleVector=tangent.x*rightDir+tangent.y*upDir+tangent.z*Normal;
+
+			irr+=texture(envMap,sampleVector).rgb*cos(theta)*sin(theta);
+
+			numberSamples++;
+		}
+	}
+	irr=Pi*irr*(1.0/float(numberSamples));
+
+	Fragcolor=vec4(irr,1.0);
+}

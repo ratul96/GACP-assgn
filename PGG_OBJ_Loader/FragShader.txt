@@ -19,7 +19,7 @@ uniform float metallic;
 uniform float roughness;
 uniform float ao;
 
- 
+uniform samplerCube irrMap; 
 
 const float PI = 3.14159265359;
 
