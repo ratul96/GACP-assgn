@@ -20,8 +20,10 @@ Scene::Scene()
 	
 	_cubeprojMatrix= glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
 
+	
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
 
 	// Set up your scene here
@@ -35,7 +37,7 @@ Scene::Scene()
 	//unsigned int lastTime = SDL_GetTicks();
 	stbi_set_flip_vertically_on_load(true);
 	int width, height, nrComponents;
-	float* data = stbi_loadf("Mono_Lake_B_Ref.hdr", &width, &height, &nrComponents, 0);
+	float* data = stbi_loadf("newMap.hdr", &width, &height, &nrComponents, 0);
 	if (data)
 	{
 		glGenTextures(1, &hdrTexture);
@@ -79,6 +81,19 @@ Scene::Scene()
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+	glGenTextures(1, &prefilMap);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, prefilMap);
+	for (unsigned int i = 0; i < 6; ++i)
+	{
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 128, 128, 0, GL_RGB, GL_FLOAT, nullptr);
+	}
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);  
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);                 // generate mipmaps for the cubemap so OpenGL automatically allocates the required memory.
+	
 	
 	
 	// Position of the light, in world-space
@@ -122,7 +137,7 @@ Scene::Scene()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, envMap);
 
-	//cubeMaterial3->LoadShaders("HDRVertexshader.txt", "IRFragShader.txt");
+	cubeMaterial3->LoadShaders("HDRVertexshader.txt", "IRFragShader.txt");
 
 	glUniform1f(glGetUniformLocation(cubeMaterial3->_shaderProgram, "envMap"), 0);
 	glActiveTexture(GL_TEXTURE0);
@@ -164,8 +179,9 @@ Scene::Scene()
 	cube2->SetMesh(cubeMesh2);
 	cube3->SetMesh(cubeMesh3);
 
-	_model2->SetPosition(1.0f, -2.0f, -2.0f);
-	_model3->SetPosition(-1.0f, -1.0f, -1.5f);
+	_model->SetPosition(1.0f, -2.0f, -2.0f);
+	_model2->SetPosition(-1.0f, -1.0f, -1.5f);
+	_model3->SetPosition(-10.0f, -10.0f, -10.0f);
 
 
 	//glViewport(0, 0, 512, 512);
@@ -223,7 +239,8 @@ void Scene::Draw()
 	
 
 	cube2->Draw(_viewMatrix, _projMatrix);
-
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
 
 }
 

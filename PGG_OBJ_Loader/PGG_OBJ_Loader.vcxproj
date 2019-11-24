@@ -150,10 +150,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="brdfFragShader.txt" />
+    <Text Include="brdfVertShader.txt" />
     <Text Include="FragShader.txt" />
     <Text Include="HDRFragshader.txt" />
     <Text Include="HDRVertexshader.txt" />
     <Text Include="IRFragShader.txt" />
+    <Text Include="prefilterFragShader.txt" />
     <Text Include="SkyFragShader.txt" />
     <Text Include="SkyVertShader.txt" />
     <Text Include="VertShader.txt" />

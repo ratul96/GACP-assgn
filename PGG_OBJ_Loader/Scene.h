@@ -35,6 +35,7 @@ public:
 	unsigned int hdrTexture;
 	unsigned int envMap;
 	unsigned int irrMap;
+	unsigned int prefilMap;
 	unsigned int RBO;
 	unsigned int FBO;
 

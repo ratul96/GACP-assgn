@@ -36,6 +36,15 @@
     <Text Include="IRFragShader.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="brdfFragShader.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="brdfVertShader.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="prefilterFragShader.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
