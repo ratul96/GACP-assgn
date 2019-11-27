@@ -48,6 +48,7 @@ protected:
 	GameObject *cube;
 	GameObject *cube2;
 	GameObject *cube3;
+	GameObject *cube4;
 	// This matrix represents the camera's position and orientation
 	glm::mat4 _viewMatrix;
 	//Camera orientation for equirectangular cubemap
