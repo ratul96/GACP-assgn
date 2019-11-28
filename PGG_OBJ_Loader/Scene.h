@@ -36,6 +36,7 @@ public:
 	unsigned int envMap;
 	unsigned int irrMap;
 	unsigned int prefilMap;
+	unsigned int brdfTex;
 	unsigned int RBO;
 	unsigned int FBO;
 

@@ -3,8 +3,6 @@
 // Input per-fragment data
 // These must correspond to the varying outputs from the vertex shader
 in vec3 vNormalV;
-//in vec3 eyeSpaceLightPosV;
-//in vec3 eyeSpaceVertPosV;
 in vec2 texCoord;
 in vec3 FragPos;
 
@@ -19,7 +17,9 @@ uniform float metallic;
 uniform float roughness;
 uniform float ao;
 
-uniform samplerCube irrMap; 
+uniform samplerCube irrMap;
+uniform samplerCube prefilMap;
+uniform sampler2D brdf;
 
 const float PI = 3.14159265359;
 
