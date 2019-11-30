@@ -1,4 +1,4 @@
 ﻿  Scene .cpp
-f:\final year assignments\gacp-assgn\pgg_obj_loader\scene .cpp(178): warning C4244: 'initializing': conversion from 'double' to 'unsigned int', possible loss of data
-f:\final year assignments\gacp-assgn\pgg_obj_loader\scene .cpp(179): warning C4244: 'initializing': conversion from 'double' to 'unsigned int', possible loss of data
+f:\final year assignments\gacp-assgn\pgg_obj_loader\scene .cpp(180): warning C4244: 'initializing': conversion from 'double' to 'unsigned int', possible loss of data
+f:\final year assignments\gacp-assgn\pgg_obj_loader\scene .cpp(181): warning C4244: 'initializing': conversion from 'double' to 'unsigned int', possible loss of data
   PGG_OBJ_Loader.vcxproj -> F:\Final Year Assignments\GACP-assgn\Debug\PGG_OBJ_Loader.exe

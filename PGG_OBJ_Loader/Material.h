@@ -5,7 +5,7 @@
 #include <string>
 #include <GLM/glm.hpp>
 #include "glew.h"
-
+//#include "Scene.h"
 
 // Encapsulates shaders and textures
 class Material
@@ -35,8 +35,8 @@ public:
 	// This applies to ambient, diffuse and specular colours
 	// If you want textures for anything else, you'll need to do that yourself ;)
 	bool SetTexture( std::string filename ) {_texture1 = LoadTexture(filename); return _texture1>0;}
-	bool SetHDR(unsigned int hdrtexture) { _hdrtexture = loadBufferHDR(hdrtexture); return _hdrtexture > 0; }
-	bool SetCubeMap(unsigned int _envMap) { envCubemap = loadCubeMap(_envMap); return envCubemap > 0; }
+	//bool SetHDR(unsigned int hdrtexture) { _hdrtexture = loadBufferHDR(hdrtexture); return _hdrtexture > 0; }
+	//bool SetCubeMap(unsigned int _envMap) { envCubemap = loadCubeMap(_envMap); return envCubemap > 0; }
 	
 
 	// Sets the material, applying the shaders
@@ -77,9 +77,10 @@ protected:
 	//OpenGL handle for hdr texture
 	unsigned int _hdrtexture;
 	
-	unsigned int envCubemap;
+	//Scene *handle=new Scene();
+
+
 	
-	unsigned int irrMap;
 };
 
 

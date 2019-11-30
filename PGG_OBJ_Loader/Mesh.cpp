@@ -239,6 +239,40 @@ void Mesh::LoadCube()
 		std::cout << " WARNING: Can't Draw Cube" << std::endl;
 	}
 }
+void Mesh::LoadQuad()
+{
+	_numVertices = sizeof(quadVertices);
+
+	if (_numVertices > 0)
+	{
+
+		glBindVertexArray(_VAO);
+
+		// Variable for storing a VBO
+		GLuint posBuffer = 0;
+		// Create a generic 'buffer'
+		glGenBuffers(1, &posBuffer);
+		// Tell OpenGL that we want to activate the buffer and that it's a VBO
+		glBindBuffer(GL_ARRAY_BUFFER, posBuffer);
+		// With this buffer active, we can now send our data to OpenGL
+		// We need to tell it how much data to send
+		// We can also tell OpenGL how we intend to use this buffer - here we say GL_STATIC_DRAW because we're only writing it once
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+
+		// This tells OpenGL how we link the vertex data to the shader
+		// (We will look at this properly in the lectures)
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3* sizeof(float)));
+		
+	}
+	else
+	{
+		std::cout << " WARNING: Can't Draw quad" << std::endl;
+	}
+
+}
 
 void Mesh::Draw()
 {
@@ -251,5 +285,16 @@ void Mesh::Draw()
 			
 		// Unbind VAO
 		glBindVertexArray( 0 );
+}
+void Mesh::DrawQuad()
+{
+	glBindVertexArray(_VAO);
+
+	// Tell OpenGL to draw it
+	// Must specify the type of geometry to draw and the number of vertices
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, _numVertices);
+
+	// Unbind VAO
+	glBindVertexArray(0);
 }
 

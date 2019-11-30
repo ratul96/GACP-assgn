@@ -44,12 +44,13 @@ protected:
 
 	// Currently one object, this could be a list of objects!
 	GameObject *_model;
-	GameObject *_model2;
-	GameObject *_model3;
+	//GameObject *_model2;
+	//GameObject *_model3;
 	GameObject *cube;
 	GameObject *cube2;
 	GameObject *cube3;
 	GameObject *cube4;
+	GameObject *quad;
 	// This matrix represents the camera's position and orientation
 	glm::mat4 _viewMatrix;
 	//Camera orientation for equirectangular cubemap

@@ -2,7 +2,7 @@
 out vec2 FragColor;
 in vec2 TexCoord;
 
-const flat PI=3.14159265359;
+const float PI=3.14159265359;
 
 float RInverse(uint bits)
 {
@@ -56,8 +56,8 @@ float GeometrySmith(vec3 N,vec3 V,vec3 L, float roughness)
 float NdotV=max(dot(N,V),0.0);
 float NdotL=max(dot(N,L),0.0);
 
-float ggx2 = GeometrySchlickGGX(NdotV, roughness);
-float ggx1 = GeometrySchlickGGX(NdotL, roughness);
+float ggx2 = GeometryGGX(NdotV, roughness);
+float ggx1 = GeometryGGX(NdotL, roughness);
 
 return ggx1 * ggx2;
 }

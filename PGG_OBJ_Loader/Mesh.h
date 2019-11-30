@@ -17,10 +17,14 @@ public:
 	
 	// OBJ file must be triangulated
 	void LoadOBJ( std::string filename );
+	//Draw unit cube for skybox
 	void LoadCube();
+	//Draw unit cube for quad
+	void LoadQuad();
 
 	// Draws the mesh - must have shaders applied for this to display!
 	void Draw();
+	void DrawQuad();
 
 protected:
 	
@@ -73,6 +77,14 @@ protected:
 		 1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
 		-1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
 		-1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f  // bottom-left        
+	};
+
+	float quadVertices[99] = {
+		
+		-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+		 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+		 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
 	};
 
 };

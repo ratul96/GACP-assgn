@@ -9,12 +9,13 @@
 Scene::Scene()
 {
 	_model = new GameObject();
-	_model2 = new GameObject();
-	_model3 = new GameObject();
+	//_model2 = new GameObject();
+	//_model3 = new GameObject();
 	cube = new GameObject();
 	cube2 = new GameObject();
 	cube3 = new GameObject();
 	cube4 = new GameObject();
+	quad = new GameObject();
 
 	// Create the material for the game object
 	Material *modelMaterial = new Material();
@@ -24,6 +25,7 @@ Scene::Scene()
 	Material *cubeMaterial2 = new Material();
 	Material *cubeMaterial3 = new Material();
 	Material *cubeMaterial4 = new Material();
+	Material *quadMaterial = new Material();
 
 
 	_cameraAngleX = 0.3f, _cameraAngleY = 1.5f;
@@ -55,7 +57,7 @@ Scene::Scene()
 	//unsigned int lastTime = SDL_GetTicks();
 	stbi_set_flip_vertically_on_load(true);
 	int width, height, nrComponents;
-	float* data = stbi_loadf("newMap.hdr", &width, &height, &nrComponents, 0);
+	float* data = stbi_loadf("Mono_Lake_B_Ref.hdr", &width, &height, &nrComponents, 0);
 	if (data)
 	{
 		glGenTextures(1, &hdrTexture);
@@ -192,6 +194,33 @@ Scene::Scene()
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	glGenTextures(1, &brdfTex);
+	// pre-allocating enough memory for the LUT texture.
+	glBindTexture(GL_TEXTURE_2D, brdfTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, 512, 512, 0, GL_RG, GL_FLOAT, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, brdfTex, 0);
+
+	quadMaterial->LoadShaders("brdfVertShader.txt", "brdfFragShader.txt");
+	quad->SetMaterial(quadMaterial);
+	Mesh* quadMesh = new Mesh();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	quadMesh->LoadQuad();
+	quadMesh->DrawQuad();
+	quad->SetMesh(quadMesh);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	
+	
+
+
 	
 	// Position of the light, in world-space
 	//_lightPosition = glm::vec3(1.2f, 2.0f, 1.2f);
@@ -205,8 +234,8 @@ Scene::Scene()
 
 	// Shaders are now in files
 	modelMaterial->LoadShaders("VertShader.txt","FragShader.txt");
-	modelMaterial2->LoadShaders("VertShader.txt", "FragShader.txt");
-	modelMaterial3->LoadShaders("VertShader.txt", "FragShader.txt");
+	//modelMaterial2->LoadShaders("VertShader.txt", "FragShader.txt");
+	//modelMaterial3->LoadShaders("VertShader.txt", "FragShader.txt");
 	
 
 	
@@ -231,8 +260,8 @@ Scene::Scene()
 	//modelMaterial->SetLightPosition(_lightPosition);
 	// Tell the game object to use this material
 	_model->SetMaterial(modelMaterial);
-	_model2->SetMaterial(modelMaterial2);
-	_model3->SetMaterial(modelMaterial3);
+	//_model2->SetMaterial(modelMaterial2);
+	//_model3->SetMaterial(modelMaterial3);
 	
 	cube2->SetMaterial(cubeMaterial2);
 	
@@ -248,8 +277,8 @@ Scene::Scene()
 	
 	// Load from OBJ file. This must have triangulated geometry
 	modelMesh->LoadOBJ("teapot3.obj");
-	modelMesh2->LoadOBJ("teapot3.obj");
-	modelMesh3->LoadOBJ("teapot3.obj");
+	//modelMesh2->LoadOBJ("teapot3.obj");
+	//modelMesh3->LoadOBJ("teapot3.obj");
 	
 	cubeMesh2->LoadCube();
 	
@@ -257,16 +286,16 @@ Scene::Scene()
 
 	// Tell the game object to use this mesh
 	_model->SetMesh(modelMesh);
-	_model2->SetMesh(modelMesh2);
-	_model3->SetMesh(modelMesh3);
+	//_model2->SetMesh(modelMesh2);
+	//_model3->SetMesh(modelMesh3);
 	
 	cube2->SetMesh(cubeMesh2);
 	
 	
 
-	_model->SetPosition(1.0f, -2.0f, -2.0f);
-	_model2->SetPosition(-1.0f, -1.0f, -1.5f);
-	_model3->SetPosition(-10.0f, -10.0f, -10.0f);
+	_model->SetPosition(10.0f, 10.0f, 10.0f);
+	//_model2->SetPosition(-19.0f, -1.0f, -1.5f);
+	//_model3->SetPosition(-0.0f, -0.0f, -10.0f);
 
 
 	
@@ -274,7 +303,6 @@ Scene::Scene()
 
 	
 
-	
 	
 	
 	
@@ -294,10 +322,11 @@ void Scene::Update(float deltaTs)
 {
 	// Update the game object (this is currently hard-coded to rotate)
 	_model->Update(deltaTs);
-	_model2->Update(deltaTs);
-	_model3->Update(deltaTs);
+	//_model2->Update(deltaTs);
+	//_model3->Update(deltaTs);
 	// This updates the camera's position and orientation
 	_viewMatrix = glm::rotate(glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -3.5f)), _cameraAngleX, glm::vec3(1, 0, 0)), _cameraAngleY, glm::vec3(0, 1, 0));
+	
 	
 }
 
@@ -305,21 +334,25 @@ void Scene::Draw()
 {
 	// Draw that model, giving it the camera's position and projection
 	_model->Draw(_viewMatrix, _projMatrix);
-	_model2->Draw(_viewMatrix, _projMatrix);
-	_model3->Draw(_viewMatrix, _projMatrix);
+	//_model2->Draw(_viewMatrix, _projMatrix);
+	//_model3->Draw(_viewMatrix, _projMatrix);
 	
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
 
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, prefilMap);
+	//glActiveTexture(GL_TEXTURE1);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, prefilMap);
+
+	//glActiveTexture(GL_TEXTURE2);
+	//glBindTexture(GL_TEXTURE_2D, brdfTex);
+
 
 	
 	cube2->Draw(_viewMatrix, _projMatrix);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, envMap);
-
-
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
+	//(GL_TEXTURE_CUBE_MAP, prefilMap);
 
 
 
