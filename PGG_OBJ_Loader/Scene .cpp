@@ -57,7 +57,7 @@ Scene::Scene()
 	//unsigned int lastTime = SDL_GetTicks();
 	stbi_set_flip_vertically_on_load(true);
 	int width, height, nrComponents;
-	float* data = stbi_loadf("Mono_Lake_B_Ref.hdr", &width, &height, &nrComponents, 0);
+	float* data = stbi_loadf("Alexs_Apt_2k.hdr", &width, &height, &nrComponents, 0);
 	if (data)
 	{
 		glGenTextures(1, &hdrTexture);
@@ -293,7 +293,7 @@ Scene::Scene()
 	
 	
 
-	_model->SetPosition(10.0f, 10.0f, 10.0f);
+	//_model->SetPosition(-10.0f, 10.0f, 10.0f);
 	//_model2->SetPosition(-19.0f, -1.0f, -1.5f);
 	//_model3->SetPosition(-0.0f, -0.0f, -10.0f);
 
@@ -340,11 +340,11 @@ void Scene::Draw()
 	//glActiveTexture(GL_TEXTURE0);
 	//glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
 
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_CUBE_MAP, prefilMap);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, prefilMap);
 
-	//glActiveTexture(GL_TEXTURE2);
-	//glBindTexture(GL_TEXTURE_2D, brdfTex);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, brdfTex);
 
 
 	
@@ -352,7 +352,7 @@ void Scene::Draw()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, envMap);
 	//glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
-	//(GL_TEXTURE_CUBE_MAP, prefilMap);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, prefilMap);
 
 
 
