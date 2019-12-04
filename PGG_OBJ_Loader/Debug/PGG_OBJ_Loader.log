@@ -1,2 +1,4 @@
-﻿  Material.cpp
-  PGG_OBJ_Loader.vcxproj -> F:\Final Year Assignments\GACP-assgn\Debug\PGG_OBJ_Loader.exe
+﻿  Scene .cpp
+d:\gacp-assgn\pgg_obj_loader\scene .cpp(180): warning C4244: 'initializing': conversion from 'double' to 'unsigned int', possible loss of data
+d:\gacp-assgn\pgg_obj_loader\scene .cpp(181): warning C4244: 'initializing': conversion from 'double' to 'unsigned int', possible loss of data
+  PGG_OBJ_Loader.vcxproj -> D:\GACP-assgn\Debug\PGG_OBJ_Loader.exe

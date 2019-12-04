@@ -321,7 +321,7 @@ Scene::~Scene()
 void Scene::Update(float deltaTs)
 {
 	// Update the game object (this is currently hard-coded to rotate)
-	_model->Update(deltaTs);
+	//_model->Update(deltaTs);
 	//_model2->Update(deltaTs);
 	//_model3->Update(deltaTs);
 	// This updates the camera's position and orientation
@@ -340,12 +340,12 @@ void Scene::Draw()
 	//glActiveTexture(GL_TEXTURE0);
 	//glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
 
-	glActiveTexture(GL_TEXTURE1);
+	/*glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, prefilMap);
 
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, brdfTex);
-
+*/
 
 	
 	cube2->Draw(_viewMatrix, _projMatrix);
