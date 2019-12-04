@@ -28,7 +28,7 @@ void main()
 
 
 	// Perform vertex transformations
-	gl_Position = projMat * viewMat *vec4(vPosition,1.0);
+	gl_Position = projMat * viewMat *vec4(FragPos,1.0);
 
 	
 	
