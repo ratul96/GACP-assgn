@@ -337,15 +337,18 @@ void Scene::Draw()
 	//_model2->Draw(_viewMatrix, _projMatrix);
 	//_model3->Draw(_viewMatrix, _projMatrix);
 	
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
+	/*glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, irrMap);
 
-	/*glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, prefilMap);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, prefilMap);*/
+
 
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, brdfTex);
-*/
+
+
+
 
 	
 	cube2->Draw(_viewMatrix, _projMatrix);

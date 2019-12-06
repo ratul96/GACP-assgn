@@ -316,9 +316,9 @@ void Material::Apply()
 	glUseProgram( _shaderProgram );
 
 	//glUniform4fv( _shaderWSLightPosLocation, 1, glm::value_ptr(_lightPosition) );
-	glUniform1f(glGetUniformLocation(_shaderProgram, "irrMap"), 0.0f);
-	glUniform1f(glGetUniformLocation(_shaderProgram, "prefilMap"), 1.0f);
-	glUniform1f(glGetUniformLocation(_shaderProgram, "brdfTex"), 2.0f);
+	glUniform1i(glGetUniformLocation(_shaderProgram, "irrMap"), 0);
+	glUniform1i(glGetUniformLocation(_shaderProgram, "prefilMap"), 0);
+	glUniform1i(glGetUniformLocation(_shaderProgram, "brdfTex"), 2);
 	glUniform3f(glGetUniformLocation(_shaderProgram, "red"), 0.5f, 0.0f, 0.0f);
 	glUniform1f(glGetUniformLocation(_shaderProgram, "ao"), 1.0f);
 	glUniform3f(glGetUniformLocation(_shaderProgram, "lightPositions[0]"), -10.0f, 10.0f, 10.0f);
