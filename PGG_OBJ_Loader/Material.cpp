@@ -332,8 +332,8 @@ void Material::Apply()
 	glUniform3f(glGetUniformLocation(_shaderProgram, "lightColors[3]"), 300.0f, 300.0f, 300.0f);
 
 	glUniform3f(glGetUniformLocation(_shaderProgram, "viewPos"), 0.0f, 0.0f, 0.0f);
-	glUniform1f(glGetUniformLocation(_shaderProgram, "metallic"), 0.6f);
-	glUniform1f(glGetUniformLocation(_shaderProgram, "roughness"), 0.0f);
+	glUniform1f(glGetUniformLocation(_shaderProgram, "metallic"), 0.0f);
+	glUniform1f(glGetUniformLocation(_shaderProgram, "roughness"), 0.5f);
 
 	
 	
